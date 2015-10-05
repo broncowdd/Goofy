@@ -2,7 +2,18 @@
 #############################
 ## HANDLE TEMP DIR & FILES ##
 #############################
-function rrmdir($dir) {     if (is_dir($dir)) {       $objects = scandir($dir);       foreach ($objects as $object) {         if ($object != "." && $object != "..") {           if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object);         }       }       reset($objects);       rmdir($dir);     }  }
+function rrmdir($dir) {
+    if (is_dir($dir)) {
+        $objects = scandir($dir);
+            foreach ($objects as $object) {
+                if ($object != "." && $object != "..") {
+                if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object);
+            }       
+        }       
+        reset($objects);       
+        rmdir($dir);     
+    }  
+}
 if (!is_dir('temp')){mkdir('temp');file_put_contents('temp/index.html', '');}
 // Clean old temp files
 $temp=glob('temp/*.zip');
@@ -11,11 +22,10 @@ foreach ($temp as $file){
 	if ($howold>240){
 		$dir=str_replace('.zip','',$file);
 		unlink($file);
-		$sub=glob($dir.'/*');
-		foreach($sub as $subfile){unlink($subfile);}
 		rrmdir($dir);
 	}
 }
+	
 	
 define('DIR',uniqid());
 mkdir('temp/'.DIR);
